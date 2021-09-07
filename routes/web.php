@@ -21,7 +21,7 @@ use App\Http\Controllers\Admin\NewsController as adminNewsController;
 Route::group(['prefix' => 'admin', 'as' => 'admin.'], function() {
     Route::resource('categories', adminCategoryController::class);
     Route::resource('news', adminNewsController::class);
-    Route::get('news/create', [adminNewsController::class, 'create']);
+    Route::get('news/create', [adminNewsController::class, 'create'])->name('news.create');
 });
 
 Route::group([], function() {
