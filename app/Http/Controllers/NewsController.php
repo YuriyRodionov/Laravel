@@ -18,5 +18,15 @@ class NewsController extends Controller
         ]);
     }
 
+    public function feedback(Request $request)
+    {
+        $file = fopen('test.txt', 'a+'); // Open .txt file
+        $content = json_encode($request->except('_token')) . PHP_EOL; // format data
+        fwrite($file , $content);
+        fclose($file );
+        die(header("Location: ".$_SERVER["HTTP_REFERER"]));
+
+    }
+
 
 }

@@ -36,4 +36,59 @@
         <div class="card-header">Side Widget</div>
         <div class="card-body">You can put anything you want inside of these side widgets. They are easy to use, and feature the Bootstrap 5 card component!</div>
     </div>
+
+    <div class="card mb-4">
+        <div class="col-md-12">
+            <div class="card-header">Оставьте отзыв</div>
+            <div class="card-body">
+            <form method="post" action="{{ route('news.feedback') }}">
+                @csrf
+                <div class="form-group">
+                    <label for="name">Ваше имя</label>
+                    <input type="text" class="form-control" name="name" id="name" value="{{ old('name') }}">
+                </div>
+                <div class="form-group">
+                    <label for="content">Текст отзыва</label>
+                    <input type="text" class="form-control" name="content" id="content" value="{{ old('content') }}">
+                </div>
+
+                <br>
+                <button type="submit" class="btn btn-success">Отправить</button>
+
+            </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="card mb-4">
+        <div class="col-md-12">
+            <div class="card-header">Форма заказа на агрегацию данных</div>
+            <div class="card-body">
+                <form method="post" action="{{ route('user.new') }}">
+                    @csrf
+                    <div class="form-group">
+                        <label for="name">Ваше имя</label>
+                        <input type="text" class="form-control" name="name" id="name" value="{{ old('name') }}">
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Номер телефона</label>
+                        <input type="number" class="form-control" name="phone" id="phone" value="{{ old('phone') }}">
+                    </div>
+                    <div class="form-group">
+                        <label for="email">E-mail</label>
+                        <input type="text" class="form-control" name="email" id="email" value="{{ old('email') }}">
+                    </div>
+                    <div class="form-group">
+                        <label for="source">Источник данных для агрегации</label>
+                        <input type="text" class="form-control" name="source" id="source" value="{{ old('source') }}">
+                    </div>
+
+                    <br>
+                    <button type="submit" class="btn btn-success">Отправить</button>
+
+                </form>
+            </div>
+        </div>
+
+    </div>
 </div>

@@ -6,6 +6,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\HelloController;
 use App\Http\Controllers\Admin\CategoryController as adminCategoryController;
 use App\Http\Controllers\Admin\NewsController as adminNewsController;
+use App\Http\Controllers\Admin\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,7 +26,8 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.'], function() {
 });
 
 Route::group([], function() {
-    Route::get('/news', [NewsController::class, 'index'])->name('news');
+    Route::get( '/news', [NewsController::class, 'index'])->name('news')->name('news');
+    Route::post('/news/feedback', [NewsController::class, 'feedback'])->name('news.feedback');
 
     Route::get('/news/{id}', [NewsController::class, 'show'])
         ->where('id', '\d+')
@@ -43,4 +45,10 @@ Route::get('/', function () {
 
 
 Route::get('/hello', [HelloController::class, 'index'])->name('hello');
+
+Route::group([], function() {
+    Route::resource('/user', UserController::class);
+    Route::post('user/new', [UserController::class, 'store'])->name('user.new');
+});
+
 

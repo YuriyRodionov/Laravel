@@ -4,8 +4,9 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
-class NewsController extends Controller
+class UserController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,10 +15,7 @@ class NewsController extends Controller
      */
     public function index()
     {
-
-        return view('admin.news.index', [
-            'newsList' => $this->getNews()
-        ]);
+        return view('admin.users.index');
     }
 
     /**
@@ -27,7 +25,7 @@ class NewsController extends Controller
      */
     public function create()
     {
-        return view('admin.news.create');
+        //
     }
 
     /**
@@ -38,13 +36,16 @@ class NewsController extends Controller
      */
     public function store(Request $request)
     {
+        /*$file = fopen('orders.txt', 'a+'); // Open .txt file
+        $content = json_encode($request->except('_token')) . PHP_EOL; // format data
+        fwrite($file , $content);
+        fclose($file );
+        die(header("Location: ".$_SERVER["HTTP_REFERER"]));*/
 
-        $request->validate([
-            'title' => ['required', 'string', 'min:3']
-        ]);
-        //dd($request->input('title', 'Заголовок по умолчанию'));
-        return redirect(route('admin.news.index'));
-
+        $content = json_encode($request->except('_token')) . PHP_EOL; // format data
+        //Storage::disk('local')->put('example1.txt', file_put_contents($content));
+        Storage::append('filename.txt', $content);
+        die(header("Location: ".$_SERVER["HTTP_REFERER"]));
     }
 
     /**
