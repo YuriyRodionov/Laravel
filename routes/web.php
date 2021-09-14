@@ -34,7 +34,6 @@ Route::group([], function() {
         ->name('news.show');
 
     Route::get('/news/types', [CategoryController::class, 'viewTypes'])->name('viewTypes');
-    Route::get('/news/types/{title_id}', [CategoryController::class, 'types'])->name('types');
 });
 
 

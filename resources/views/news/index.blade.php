@@ -4,12 +4,12 @@
                 <!-- Blog post-->
                 @forelse ($newsList as $news)
                 <div class="card mb-4">
-                    <a href="{{route('news.show', ['id' => $news['id']])}}">{{$news['title']}}<img class="card-img-top" src="https://dummyimage.com/700x350/dee2e6/6c757d.jpg" alt="..." /></a>
+                    <a href="{{route('news.show', ['id' => $news->id])}}">{{$news->title}}<img class="card-img-top" src="https://dummyimage.com/700x350/dee2e6/6c757d.jpg" alt="..." /></a>
                     <div class="card-body">
-                        <div class="small text-muted">{{now()->format('d:m:Y H:i')}}</div>
-                        <h2 class="card-title h4">{{$news['title_id']}}</h2>
-                        <p class="card-text">{{$news['author']}}</p>
-                        <a class="btn btn-primary" href="{{route('news.show', ['id' => $news['id']])}}">{{$news['title']}} &nbsp;Read more →</a>
+                        <div class="small text-muted">{{ $news->created_at }}</div>
+                        <h2 class="card-title h4">{{$news->category_id}}</h2>
+                        <p class="card-text">{{$news->author}}</p>
+                        <a class="btn btn-primary" href="{{route('news.show', ['id' => $news->id])}}">{{$news->title}} &nbsp;Read more →</a>
                     </div>
                 </div>
                     @if($loop->last)

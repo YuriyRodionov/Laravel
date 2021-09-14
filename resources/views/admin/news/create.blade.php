@@ -29,4 +29,5 @@
 </form>
         </div>
     </div>
+    @dump(env('DB_DATABASE'))
 @endsection

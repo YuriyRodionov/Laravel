@@ -31,10 +31,10 @@
 
             <!-- Nested row for non-featured blog posts-->
             <div class="row">
-                <div class="col-lg-6">
+
       @yield('content')
         <!-- Side widgets-->
-                </div>
+
             </div>
         </div>
         <x-sidebar></x-sidebar>
