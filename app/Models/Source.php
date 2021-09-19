@@ -6,10 +6,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class Category extends Model
+class Source extends Model
 {
     use HasFactory;
-    protected $table = 'categories';
+
+    protected $table = 'sources';
 
     protected $guarded = [
         'id'
@@ -17,6 +18,6 @@ class Category extends Model
 
     public function news(): HasMany
     {
-        return $this->hasMany(News::class, 'category_id', 'id');
+        return $this->hasMany(News::class, 'source_id', 'id');
     }
 }

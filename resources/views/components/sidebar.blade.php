@@ -64,7 +64,7 @@
         <div class="col-md-12">
             <div class="card-header">Форма заказа на агрегацию данных</div>
             <div class="card-body">
-                <form method="post" action="{{ route('user.new') }}">
+                <form method="post" action="{{ route('admin.users.store') }}">
                     @csrf
                     <div class="form-group">
                         <label for="name">Ваше имя</label>

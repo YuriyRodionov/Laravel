@@ -12,7 +12,11 @@
 <div class="row">
 
 <div class="col-md-12">
+    @include('include.messages')
 <div class="table-responsive">
+    @if(session()->has('success'))
+        <div class="alert alert-success">{{ session()->get('success') }}</div>
+    @endif
     <table class="table table-bordered">
         <thead>
             <tr>
@@ -20,6 +24,7 @@
                 <th>Категория новости</th>
                 <th>Заголовок</th>
                 <th>Описание</th>
+                <th>Источник</th>
                 <th>Дата добавления</th>
                 <th>Управление</th>
             </tr>
@@ -28,14 +33,15 @@
 @forelse($newsList as $news)
     <tr>
         <td>{{$news->id}}</td>
-        <td>{{$news->category_id}}</td>
+        <td>{{optional($news->category)->title}}</td>
         <td>{{$news->title}}</td>
         <td>{{$news->description}}</td>
+        <td>{{$news->source->title}}</td>
         <td>{{$news->created_at}}</td>
         <td>
             <a href="{{ route('admin.news.edit', ['news'=>$news->id]) }}">Ред.</a>
-            &nbsp;
-            <a href="#">Уд.</a>
+            &nbsp;&nbsp;
+            <a href="javascript:;" class="delete" rel="{{ $news->id }}">Уд.</a>
         </td>
     </tr>
 
@@ -44,7 +50,38 @@
 @endforelse
         </tbody>
     </table>
+
+    {!! $newsList->links() !!}
 </div>
 </div>
 </div>
 @endsection
+
+@push('js')
+    <script type="text/javascript">
+        document.addEventListener("DOMContentLoaded", function() {
+            const el = document.querySelectorAll(".delete");
+            console.log(el);
+            el.forEach(function(e, k) {
+                e.addEventListener("click", function() {
+                    const rel = e.getAttribute("rel");
+                    if(confirm("Подтверждаете удаление c #ID " + rel + " ?")) {
+                        submit("/admin/news/" + rel).then(() => {
+                            location.reload();
+                        })
+                    }
+                });
+            })
+        });
+        async function submit(url) {
+            let response = await fetch(url, {
+                method: 'DELETE',
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                }
+            });
+            let result = await response.json();
+            return result.ok;
+        }
+    </script>
+@endpush

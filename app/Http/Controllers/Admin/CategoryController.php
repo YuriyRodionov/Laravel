@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Category;
+use App\Models\News;
 use Illuminate\Http\Request;
 
 class CategoryController extends Controller
@@ -15,9 +16,8 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $model = new Category();
 
-        $categories = $model->getCategories();
+        $categories = Category::withCount('news')->get();
         return view('admin.categories.index', [
             'categories' => $categories
         ]);
@@ -30,7 +30,7 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.categories.create');
     }
 
     /**
@@ -41,7 +41,17 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'title' => ['required', 'string', 'min:3']
+        ]);
+
+        $categories = Category::create($request->only('title', 'description'));
+
+        if($categories) {
+            return redirect()->route('admin.categories.index')->with('success', 'Запись успешно добавлена');
+        }
+
+        return back()->with('error', 'Запись не добавлена')->withInput();
     }
 
     /**
@@ -63,7 +73,9 @@ class CategoryController extends Controller
      */
     public function edit(Category $category)
     {
-        dd($category);
+        return view('admin.categories.edit', [
+            'category' => $category
+        ]);
     }
 
     /**
@@ -75,7 +87,14 @@ class CategoryController extends Controller
      */
     public function update(Request $request, Category $category)
     {
-        //
+        $category = $category->fill(
+            $request->only(['title', 'description'])
+        )->save();
+
+        if($category) {
+            return redirect()->route('admin.categories.index')->with('success', 'Запись успешно обновлена');
+        }
+        return back()->with('error', 'Запись не обновлена')->withInput();
     }
 
     /**

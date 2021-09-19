@@ -15,7 +15,11 @@ class UserController extends Controller
      */
     public function index()
     {
-        return view('admin.users.index');
+        $list = Storage::get('filename.txt');
+
+        return view('admin.users.index', [
+            'list' => $list
+        ]);
     }
 
     /**
@@ -45,7 +49,12 @@ class UserController extends Controller
         $content = json_encode($request->except('_token')) . PHP_EOL; // format data
         //Storage::disk('local')->put('example1.txt', file_put_contents($content));
         Storage::append('filename.txt', $content);
-        die(header("Location: ".$_SERVER["HTTP_REFERER"]));
+        // die(header("Location: ".$_SERVER["HTTP_REFERER"]));
+        if($content) {
+            return redirect()->route('news')->with('success', 'Данные получены');
+        }
+
+        return back()->with('error', 'Ошибка')->withInput();
     }
 
     /**

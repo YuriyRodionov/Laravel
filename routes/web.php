@@ -22,11 +22,13 @@ use App\Http\Controllers\Admin\UserController;
 Route::group(['prefix' => 'admin', 'as' => 'admin.'], function() {
     Route::resource('categories', adminCategoryController::class);
     Route::resource('news', adminNewsController::class);
+    Route::resource('users', UserController::class);
+    Route::post('users/create', [UserController::class, 'store'])->name('user.new');
     Route::get('news/create', [adminNewsController::class, 'create'])->name('news.create');
 });
 
 Route::group([], function() {
-    Route::get( '/news', [NewsController::class, 'index'])->name('news')->name('news');
+    Route::get( '/news', [NewsController::class, 'index'])->name('news');
     Route::post('/news/feedback', [NewsController::class, 'feedback'])->name('news.feedback');
 
     Route::get('/news/{id}', [NewsController::class, 'show'])
