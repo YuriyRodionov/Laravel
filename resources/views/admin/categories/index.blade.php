@@ -10,8 +10,8 @@
 </div>
 
 <div class="row">
-
     <div class="col-md-12">
+        @include('include.messages')
         <div class="table-responsive">
             <table class="table table-bordered">
                 <thead>

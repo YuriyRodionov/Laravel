@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\CategoryCreateRequest;
+use App\Http\Requests\CategoryUpdateRequest;
 use App\Models\Category;
 use App\Models\News;
 use Illuminate\Http\Request;
@@ -39,19 +41,16 @@ class CategoryController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CategoryCreateRequest $request)
     {
-        $request->validate([
-            'title' => ['required', 'string', 'min:3']
-        ]);
 
-        $categories = Category::create($request->only('title', 'description'));
+        $categories = Category::create($request->validated());
 
         if($categories) {
-            return redirect()->route('admin.categories.index')->with('success', 'Запись успешно добавлена');
+            return redirect()->route('admin.categories.index')->with('success', __('messages.admin.categories.create.success'));
         }
 
-        return back()->with('error', 'Запись не добавлена')->withInput();
+        return back()->with('error', __('messages.admin.categories.create.fail'))->withInput();
     }
 
     /**
@@ -85,16 +84,16 @@ class CategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Category $category)
+    public function update(CategoryUpdateRequest $request, Category $category)
     {
         $category = $category->fill(
             $request->only(['title', 'description'])
         )->save();
 
         if($category) {
-            return redirect()->route('admin.categories.index')->with('success', 'Запись успешно обновлена');
+            return redirect()->route('admin.categories.index')->with('success', __('messages.admin.categories.update.success'));
         }
-        return back()->with('error', 'Запись не обновлена')->withInput();
+        return back()->with('error', __('messages.admin.categories.update.fail'))->withInput();
     }
 
     /**

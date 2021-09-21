@@ -14,9 +14,9 @@
 <div class="col-md-12">
     @include('include.messages')
 <div class="table-responsive">
-    @if(session()->has('success'))
+    {{-- @if(session()->has('success'))
         <div class="alert alert-success">{{ session()->get('success') }}</div>
-    @endif
+    @endif --}}
     <table class="table table-bordered">
         <thead>
             <tr>
@@ -59,6 +59,8 @@
 
 @push('js')
     <script type="text/javascript">
+
+        /* Вариант на js
         document.addEventListener("DOMContentLoaded", function() {
             const el = document.querySelectorAll(".delete");
             console.log(el);
@@ -82,6 +84,32 @@
             });
             let result = await response.json();
             return result.ok;
-        }
+        }*/
+
+        $(function() {
+
+            $(".delete").on('click', function () {
+                var id = $(this).attr("rel");
+                if (confirm("Подтвердите удаление записи с #ID " + id)) {
+                    $.ajax({
+                        type: "delete",
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+                        url: "/admin/news/" + id,
+                        success: function (response) {
+                            alert("Запись успешно удалена");
+                            console.log(response);
+                            //location.reload();
+                        },
+                        error: function (error) {
+                            console.log(error);
+                        }
+                    });
+                }
+            });
+
+        });
+
     </script>
 @endpush

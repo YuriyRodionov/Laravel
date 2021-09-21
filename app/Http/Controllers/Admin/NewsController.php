@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\NewsCreateRequest;
+use App\Http\Requests\NewsUpdateRequest;
 use App\Models\Category;
 use App\Models\News;
 use App\Models\Source;
@@ -48,24 +50,23 @@ class NewsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(NewsCreateRequest $request)
     {
 
-        $request->validate([
-            'title' => ['required', 'string', 'min:3']
-        ]);
+
         //dd($request->input('title', 'Заголовок по умолчанию'));
 
         //$data = $request->except('_token');
 
-
-        $news = News::create($request->only('category_id', 'title', 'author', 'description', 'source_id'));
+        // После валидации взамен $request->only('category_id', 'title', 'author', 'description', 'source_id') используем $request->validated
+        $news = News::create($request->validated());
 
         if($news) {
-            return redirect()->route('admin.news.index')->with('success', 'Запись успешно добавлена');
+            return redirect()->route('admin.news.index')->with('success', __('messages.admin.news.create.success'));
         }
 
-        return back()->with('error', 'Запись не добавлена')->withInput();
+        return back()->with('error', __('messages.admin.news.create.fail'))->withInput();
+        // хелпер trans(или __) просто выводит сообщение из папки локализации
     }
 
     /**
@@ -103,19 +104,16 @@ class NewsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, News $news)
+    public function update(NewsUpdateRequest $request, News $news)
     {
-        $request->validate([
-        'title' => ['required', 'string', 'min:3']
-        ]);
 
-        $news = $news->fill($request->only('category_id', 'title', 'author', 'description', 'source_id'))->save();
+        $news = $news->fill($request->validated())->save();
 
         if($news) {
-            return redirect()->route('admin.news.index')->with('success', 'Запись успешно обновлена');
+            return redirect()->route('admin.news.index')->with('success', __('messages.admin.news.update.success'));
         }
 
-        return back()->with('error', 'Запись не обновлена')->withInput();
+        return back()->with('error', __('messages.admin.news.update.fail'))->withInput();
     }
 
     /**
@@ -124,11 +122,23 @@ class NewsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(News $news)
+    public function destroy(Request $request, News $news)
     {
-        $status = $news->delete();
+        if($request->ajax()) {
+            try {
+                $news->delete();
+                return response()->json(['message' => 'ok']);
+
+            } catch(\Exception $e) {
+                \Log::error("error deleting news" . PHP_EOL, [$e]);
+                return response()->json(['message' => 'error', 400]);
+            }
+        }
+
+        /* Это вариант из удаления с чистым js
+         * $status = $news->delete();
         if($status) {
             return response()->json(['ok' => 'ok']);
-        }
+        }*/
     }
 }

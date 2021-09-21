@@ -62,6 +62,7 @@
 
     <div class="card mb-4">
         <div class="col-md-12">
+            @include('include.messages')
             <div class="card-header">Форма заказа на агрегацию данных</div>
             <div class="card-body">
                 <form method="post" action="{{ route('admin.users.store') }}">

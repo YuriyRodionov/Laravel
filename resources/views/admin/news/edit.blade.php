@@ -25,8 +25,10 @@
                     </select>
                 </div>
                 <div class="form-group">
+
                     <label for="title">Заголовок новости</label>
                     <input type="text" class="form-control" name="title" id="title" value="{{ $news->title }}">
+                     @error('title') <div style="color: red;">{{ $message }}</div> @enderror
                 </div>
                 <div class="form-group">
                     <label for="author">Автор новости</label>
