@@ -40,10 +40,19 @@
     <!-- Divider -->
     <hr class="sidebar-divider">
 
+    <li class="nav-item @if(request()->routeIs('admin.orders.*')) active @endif">
+        <a class="nav-link" href="{{route('admin.orders.index')}}">
+            <i class="fas fa-fw fa-list-alt"></i>
+            <span>Заказы</span></a>
+    </li>
+
+    <!-- Divider -->
+    <hr class="sidebar-divider">
+
     <li class="nav-item @if(request()->routeIs('admin.users.*')) active @endif">
         <a class="nav-link" href="{{route('admin.users.index')}}">
             <i class="fas fa-fw fa-list-alt"></i>
-            <span>Пользователи и заказы</span></a>
+            <span>Пользователи</span></a>
     </li>
 
 

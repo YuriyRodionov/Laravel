@@ -65,7 +65,7 @@
             @include('include.messages')
             <div class="card-header">Форма заказа на агрегацию данных</div>
             <div class="card-body">
-                <form method="post" action="{{ route('admin.users.store') }}">
+                <form method="post" action="{{ route('admin.orders.store') }}">
                     @csrf
                     <div class="form-group">
                         <label for="name">Ваше имя</label>

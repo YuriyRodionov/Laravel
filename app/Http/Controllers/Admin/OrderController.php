@@ -3,14 +3,10 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\OrderCreateRequest;
-use App\Http\Requests\UserUpdateRequest;
-use App\Models\News;
-use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
-class UserController extends Controller
+class OrderController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -19,8 +15,10 @@ class UserController extends Controller
      */
     public function index()
     {
-        return view('admin.users.index', [
-            'users' => User::all()
+        $list = Storage::get('filename.txt');
+
+        return view('admin.orders.index', [
+            'list' => $list
         ]);
     }
 
@@ -40,7 +38,7 @@ class UserController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(OrderCreateRequest $request)
+    public function store(Request $request)
     {
         /*$file = fopen('orders.txt', 'a+'); // Open .txt file
         $content = json_encode($request->except('_token')) . PHP_EOL; // format data
@@ -59,6 +57,7 @@ class UserController extends Controller
         return back()->with('error', 'Ошибка')->withInput();
     }
 
+
     /**
      * Display the specified resource.
      *
@@ -76,11 +75,9 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(User $user)
+    public function edit($id)
     {
-        return view('admin.users.edit', [
-            'user' => $user
-        ]);
+        //
     }
 
     /**
@@ -90,15 +87,9 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(UserUpdateRequest $request, User $user)
+    public function update(Request $request, $id)
     {
-        $user = $user->fill($request->validated())->save();
-
-        if($user) {
-            return redirect()->route('admin.users.index')->with('success', __('messages.admin.user.update.success'));
-        }
-
-        return back()->with('error', __('messages.admin.user.update.fail'))->withInput();
+        //
     }
 
     /**
