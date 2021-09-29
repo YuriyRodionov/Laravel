@@ -14,7 +14,9 @@ class AddSourceFieldInNewsTable extends Migration
     public function up()
     {
         Schema::table('news', function (Blueprint $table) {
-            $table->foreignId('source_id')->constrained('sources');
+            $table->foreignId('source_id')->constrained('sources')
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
         });
     }
 
@@ -26,6 +28,7 @@ class AddSourceFieldInNewsTable extends Migration
     public function down()
     {
         Schema::table('news', function (Blueprint $table) {
+            $table->dropForeign(['source_id']); // или $table->dropForeign('news_source_id_foreign');
             $table->dropColumn('source_id');
         });
     }

@@ -7,7 +7,13 @@
             <div class="card">
                 <div class="card-header">{{ __('Вход') }}</div>
 
+
+
                 <div class="card-body">
+
+                    <br><a href="{{ route('vk.start') }}">Авторизация через VK</a><br>
+                    <br><a href="{{ route('facebook.start') }}">Авторизация через Facebook</a><br>
+
                     <form method="POST" action="{{ route('login') }}">
                         @csrf
 
@@ -71,3 +77,5 @@
     </div>
 </div>
 @endsection
+
+

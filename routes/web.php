@@ -4,12 +4,15 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\HelloController;
+use App\Http\Controllers\SocialController;
+use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Account\IndexController as AccountController;
 use App\Http\Controllers\Admin\OrderController as OrderController;
 use App\Http\Controllers\Admin\IndexController as AdminController;
 use App\Http\Controllers\Admin\CategoryController as adminCategoryController;
 use App\Http\Controllers\Admin\NewsController as adminNewsController;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Admin\ParserController as ParserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -41,6 +44,8 @@ Route::group(['middleware' => 'auth'], function() {     //доступна то�
         Route::get('/', AdminController::class)->name('index');
         Route::post('users/create', [UserController::class, 'store'])->name('user.new');
         Route::get('news/create', [adminNewsController::class, 'create'])->name('news.create');
+
+        Route::get('/parser', ParserController::class)->name('parser');
     });
 });
 
@@ -83,20 +88,19 @@ Route::get('/session', function() {
     // читаем куку request()->cookie();
 });
 
+Route::group(['middleware' => 'guest'], function() {
+    Route::get('/vk/start', [SocialController::class, 'startVk'])->name('vk.start');
+    Route::get('/vk/callback', [SocialController::class, 'callbackVk'])->name('vk.callback');
+    Route::get('/facebook/start', [SocialController::class, 'startFacebook'])->name('facebook.start');
+    Route::get('/facebook/callback', [SocialController::class, 'callbackFacebook'])->name('facebook.callback');
+});
 
-
-Auth::routes();
-
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-
-Auth::routes();
-
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-
-Auth::routes();
-
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::post('/register', [RegisterController::class, 'create']);
 
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+
+
+
