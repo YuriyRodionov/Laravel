@@ -29,7 +29,7 @@ class News extends Model
     }*/
 
     protected $fillable = [
-        'category_id', 'title', 'author', 'description', 'source_id'
+        'category_id', 'title', 'author', 'description', 'source_id', 'image'
     ];
 
     public function category(): BelongsTo

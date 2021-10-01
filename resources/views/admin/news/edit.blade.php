@@ -11,7 +11,7 @@
         <div class="col-md-12">
             @include('include.messages')
 
-            <form method="post" action="{{ route('admin.news.update', ['news' => $news]) }}">
+            <form method="post" action="{{ route('admin.news.update', ['news' => $news]) }}" enctype="multipart/form-data">
                 @csrf
                 @method('put')
                 <div class="form-group">
@@ -35,6 +35,10 @@
                     <input type="text" class="form-control" name="author" id="author" value="{{ $news->author }}">
                 </div>
                 <div class="form-group">
+                    <label for="image">Изображение</label>
+                    <input type="file" class="form-control" name="image" id="image">
+                </div>
+                <div class="form-group">
                     <label for="description">Текст новости</label>
                     <input type="text" class="form-control" name="description" id="description" value="{!! $news->description !!}">
                 </div>
@@ -52,4 +56,6 @@
         </div>
     </div>
 @endsection
+
+
 

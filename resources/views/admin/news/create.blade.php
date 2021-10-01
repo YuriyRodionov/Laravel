@@ -10,8 +10,8 @@
 
         <div class="col-md-12">
             @include('include.messages')
-
-<form method="post" action="{{ route('admin.news.store') }}">
+            <div id="editor"></div>
+<form method="post" action="{{ route('admin.news.store') }}" enctype="multipart/form-data">
     @csrf
     <div class="form-group">
         <label for="title">Категория новости</label>
@@ -35,6 +35,7 @@
         <label for="description">Текст новости</label>
         <input type="text" class="form-control" name="description" id="description" value="{!! old('description') !!}">
     </div>
+    <label for="source">Источник новости</label>
     <select class="form-control" name="source_id">
         @foreach($sources as $source)
             <option value="{{ $source->id }}"
@@ -49,3 +50,33 @@
         </div>
     </div>
 @endsection
+
+@push('js')
+
+    <script src="https://cdn.ckeditor.com/ckeditor5/30.0.0/classic/ckeditor.js"></script>
+    {{--<script type="text/javascript">
+        ClassicEditor
+            .create( document.querySelector( '#description' ) )
+            .then( editor => {
+                console.log( editor );
+            } )
+            .catch( error => {
+                console.error( error );
+            } );
+    </script>--}}
+    <script>
+        var options = {
+            filebrowserImageBrowseUrl: '/laravel-filemanager?type=Images',
+            filebrowserImageUploadUrl: '/laravel-filemanager/upload?type=Images&_token=',
+            filebrowserBrowseUrl: '/laravel-filemanager?type=Files',
+            filebrowserUploadUrl: '/laravel-filemanager/upload?type=Files&_token='
+        };
+    </script>
+
+
+    <script>
+        CKEDITOR.replace('description', options);
+    </script>
+
+
+@endpush

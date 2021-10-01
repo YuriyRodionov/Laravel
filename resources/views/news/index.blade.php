@@ -4,7 +4,7 @@
                 <!-- Blog post-->
                 @forelse ($newsList as $news)
                 <div class="card mb-4">
-                    <a href="{{route('news.show', ['id' => $news->id])}}">{{$news->title}}<img class="card-img-top" src="https://dummyimage.com/700x350/dee2e6/6c757d.jpg" alt="..." /></a>
+                    <a href="{{route('news.show', ['id' => $news->id])}}">{{$news->title}}<img class="card-img-top" src=@if($news->image) {{ Storage::disk('public')->url($news->image) }} @else "https://dummyimage.com/700x350/dee2e6/6c757d.jpg @endif" style="height: 350px;" alt="..." /></a>
                     <div class="card-body">
                         <div class="small text-muted">{{ $news->created_at }}</div>
                         <h2 class="card-title h4">{{$news->category_id}}</h2>
