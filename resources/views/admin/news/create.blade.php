@@ -32,6 +32,10 @@
         <input type="text" class="form-control" name="author" id="author" value="{{ old('author') }}">
     </div>
     <div class="form-group">
+        <label for="image">Изображение</label>
+        <input type="file" class="form-control" name="image" id="image">
+    </div>
+    <div class="form-group">
         <label for="description">Текст новости</label>
         <input type="text" class="form-control" name="description" id="description" value="{!! old('description') !!}">
     </div>
@@ -52,18 +56,7 @@
 @endsection
 
 @push('js')
-
-    <script src="https://cdn.ckeditor.com/ckeditor5/30.0.0/classic/ckeditor.js"></script>
-    {{--<script type="text/javascript">
-        ClassicEditor
-            .create( document.querySelector( '#description' ) )
-            .then( editor => {
-                console.log( editor );
-            } )
-            .catch( error => {
-                console.error( error );
-            } );
-    </script>--}}
+    <script src="//cdn.ckeditor.com/4.6.2/standard/ckeditor.js"></script>
     <script>
         var options = {
             filebrowserImageBrowseUrl: '/laravel-filemanager?type=Images',
@@ -72,11 +65,7 @@
             filebrowserUploadUrl: '/laravel-filemanager/upload?type=Files&_token='
         };
     </script>
-
-
     <script>
         CKEDITOR.replace('description', options);
     </script>
-
-
 @endpush

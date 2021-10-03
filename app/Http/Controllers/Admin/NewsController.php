@@ -49,16 +49,31 @@ class NewsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(NewsCreateRequest $request)
+    public function store(NewsCreateRequest $request, News $news)
     {
+        $data = $request->validated();
 
+        if ($request->hasFile('image')) {
+            $uploadService = app(UploadService::class);
+            $fileURL = $uploadService->upload($request->file('image'));
+            $data['image'] = $fileURL;
+        }
+
+        $news = $news->fill($data)->save();
+
+        if($news) {
+            return redirect()->route('admin.news.index')->with('success', __('messages.admin.news.update.success'));
+        }
+
+        return back()->with('error', __('messages.admin.news.update.fail'))->withInput();
+    }
 
         //dd($request->input('title', 'Заголовок по умолчанию'));
 
         //$data = $request->except('_token');
 
         // После валидации взамен $request->only('category_id', 'title', 'author', 'description', 'source_id') используем $request->validated
-        $news = News::create($request->validated());
+        /*$news = News::create($request->validated());
 
         if($news) {
             return redirect()->route('admin.news.index')->with('success', __('messages.admin.news.create.success'));
@@ -66,7 +81,7 @@ class NewsController extends Controller
 
         return back()->with('error', __('messages.admin.news.create.fail'))->withInput();
         // хелпер trans(или __) просто выводит сообщение из папки локализации
-    }
+    }*/
 
     /**
      * Display the specified resource.

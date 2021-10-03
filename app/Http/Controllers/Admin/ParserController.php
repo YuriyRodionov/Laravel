@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Admin;
 
 use App\Contract\Parser;
 use App\Http\Controllers\Controller;
+use App\Jobs\NewsJob;
 use App\Models\News;
+use App\Models\Source;
 use Illuminate\Http\Request;
 
 class ParserController extends Controller
@@ -20,21 +22,21 @@ class ParserController extends Controller
         //$service = new ParserService();
         //dd($service->parse('https://news.yandex.ru/music.rss'));
 
-        $newsList = $service->parse('https://news.yandex.ru/music.rss');
+        $urls = [
+            'https://news.yandex.ru/auto.rss',
+            'https://news.yandex.ru/auto_racing.rss',
+            'https://news.yandex.ru/army.rss',
+            'https://news.yandex.ru/gadgets.rss',
+            'https://news.yandex.ru/index.rss',
+        ];
 
-            foreach ($newsList['news'] as $oneNews) {
-                News::create([
-                    'category_id' => 1,
-                    'title' => $oneNews['title'],
-                    'description' => $oneNews['description'],
-                    'author' => 'Yandex',
-                    'created_at' => $oneNews['pubDate'],
-                    'source_id' => 1
+        foreach ($urls as $url) {
 
-                ]);
-            }
+            dispatch(new NewsJob($url));
 
-        return redirect()->route('admin.news.index');
+        }
+
+        return redirect()->route('admin.news.index')->with('success', 'Новости добавлены в очередь');
 
     }
 }
